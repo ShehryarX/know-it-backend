@@ -1,0 +1,3 @@
+language: java
+jdk: oraclejdk8
+script: HEROKU_API_KEY="4ed5d982-6877-4435-abee-d8291eec8914" mvn clean verify -Pheroku
