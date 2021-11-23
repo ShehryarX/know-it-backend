@@ -1,3 +1,6 @@
 language: java
-jdk: oraclejdk8
-script: HEROKU_API_KEY="4ed5d982-6877-4435-abee-d8291eec8914" mvn clean verify -Pheroku
+jdk: openjdk8
+deploy:
+  provider: heroku
+  api_key: 83008e4b-20a4-4ec0-ad0a-c2400b4dffc9
+  app: know-it-back-master-x3ikbzbziy
