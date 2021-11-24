@@ -1,7 +1,7 @@
 package io.knowit.backend.service.impl;
 
-import io.knowit.backend.io.model.ApplicationUser;
-import io.knowit.backend.io.repository.ApplicationUserRepository;
+import io.knowit.backend.io.entity.UserEntity;
+import io.knowit.backend.io.repository.UserEntityRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,18 +12,18 @@ import static java.util.Collections.emptyList;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private ApplicationUserRepository applicationUserRepository;
+    private UserEntityRepository userEntityRepository;
 
-    public UserDetailsServiceImpl(ApplicationUserRepository applicationUserRepository) {
-        this.applicationUserRepository = applicationUserRepository;
+    public UserDetailsServiceImpl(UserEntityRepository userEntityRepository) {
+        this.userEntityRepository = userEntityRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        ApplicationUser applicationUser = applicationUserRepository.findByUsername(username);
-        if (applicationUser == null) {
+        UserEntity userEntity = userEntityRepository.findByUsername(username);
+        if (userEntity == null) {
             throw new UsernameNotFoundException(username);
         }
-        return new User(applicationUser.getUsername(), applicationUser.getPassword(), emptyList());
+        return new User(userEntity.getUsername(), userEntity.getPassword(), emptyList());
     }
 }

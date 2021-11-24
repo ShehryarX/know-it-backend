@@ -1,4 +1,4 @@
-package io.knowit.backend.io.model;
+package io.knowit.backend.io.entity;
 
 import com.mongodb.lang.NonNull;
 import org.springframework.data.annotation.Id;
@@ -6,7 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
 
-public class Note {
+public class NoteEntity {
     @Id
     private String id;
 
@@ -20,13 +20,13 @@ public class Note {
     private Date timeUpdated;
 
     @NonNull
-    private Folder folder;
+    private FolderEntity folderEntity;
 
-    public Note(@NonNull String title, @NonNull String contents, Date timeUpdated, @NonNull Folder folder) {
+    public NoteEntity(@NonNull String title, @NonNull String contents, Date timeUpdated, @NonNull FolderEntity folderEntity) {
         this.title = title;
         this.contents = contents;
         this.timeUpdated = timeUpdated;
-        this.folder = folder;
+        this.folderEntity = folderEntity;
     }
 
     public String getId() {
@@ -64,11 +64,11 @@ public class Note {
     }
 
     @NonNull
-    public Folder getFolder() {
-        return folder;
+    public FolderEntity getFolderEntity() {
+        return folderEntity;
     }
 
-    public void setFolder(@NonNull Folder folder) {
-        this.folder = folder;
+    public void setFolderEntity(@NonNull FolderEntity folderEntity) {
+        this.folderEntity = folderEntity;
     }
 }

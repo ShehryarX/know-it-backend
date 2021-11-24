@@ -1,7 +1,7 @@
 package io.knowit.backend.service;
 
-import io.knowit.backend.io.model.ApplicationUser;
+import io.knowit.backend.io.entity.UserEntity;
 
 public interface ApplicationUserService {
-    void signUpUser(ApplicationUser user) throws Exception;
+    void signUpUser(UserEntity user) throws Exception;
 }

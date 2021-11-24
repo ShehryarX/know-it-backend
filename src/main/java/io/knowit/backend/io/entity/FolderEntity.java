@@ -1,12 +1,11 @@
-package io.knowit.backend.io.model;
+package io.knowit.backend.io.entity;
 
 import com.mongodb.lang.NonNull;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.Size;
 
-public class Folder {
+public class FolderEntity {
     @Id
     private String id;
 
@@ -18,12 +17,15 @@ public class Folder {
     private String colour;
 
     @NonNull
-    private ApplicationUser applicationUser;
+    private UserEntity userEntity;
 
-    public Folder(@NonNull @Size(min = 1) String title, @NonNull String colour, @NonNull ApplicationUser applicationUser) {
+    public FolderEntity() {
+    }
+
+    public FolderEntity(@NonNull @Size(min = 1) String title, @NonNull String colour, @NonNull UserEntity userEntity) {
         this.title = title;
         this.colour = colour;
-        this.applicationUser = applicationUser;
+        this.userEntity = userEntity;
     }
 
     public String getId() {
@@ -53,11 +55,11 @@ public class Folder {
     }
 
     @NonNull
-    public ApplicationUser getApplicationUser() {
-        return applicationUser;
+    public UserEntity getUserEntity() {
+        return userEntity;
     }
 
-    public void setApplicationUser(@NonNull ApplicationUser applicationUser) {
-        this.applicationUser = applicationUser;
+    public void setUserEntity(@NonNull UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 }

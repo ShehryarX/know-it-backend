@@ -1,11 +1,11 @@
-package io.knowit.backend.io.model;
+package io.knowit.backend.io.entity;
 
 import com.mongodb.lang.NonNull;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.Size;
 
-public class Flashcard {
+public class FlashcardEntity {
     @Id
     private String id;
 
@@ -17,7 +17,7 @@ public class Flashcard {
     @Size(min = 1)
     private String contents;
 
-    public Flashcard(String title, String contents) {
+    public FlashcardEntity(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }

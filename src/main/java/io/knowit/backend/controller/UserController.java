@@ -1,7 +1,7 @@
 package io.knowit.backend.controller;
 
 import io.knowit.backend.proto.SignUpUserRequest;
-import io.knowit.backend.io.model.ApplicationUser;
+import io.knowit.backend.io.entity.UserEntity;
 import io.knowit.backend.service.ApplicationUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,8 @@ public class UserController {
 
     @PostMapping(value = "/sign-up", consumes = "application/json", produces = "application/json")
     public void signUp(@Valid @RequestBody SignUpUserRequest user) throws Exception {
-        ApplicationUser applicationUser = new ApplicationUser();
-        BeanUtils.copyProperties(user, applicationUser);
-        this.applicationUserService.signUpUser(applicationUser);
+        UserEntity userEntity = new UserEntity();
+        BeanUtils.copyProperties(user, userEntity);
+        this.applicationUserService.signUpUser(userEntity);
     }
 }
