@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/notes")
+@RequestMapping("/api/v1/notes")
 public class NoteController {
 
     private NoteService noteService;
