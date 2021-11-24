@@ -1,21 +1,21 @@
-package io.knowit.backend.proto;
+package io.knowit.backend.proto.response;
 
 import java.util.Date;
 
-public class GetFolderWithNotesResponseItemNote {
+public class BriefNoteDescriptionResponse {
     private String id;
     private String title;
     private Date timeUpdated;
-    private String folderEntityId;
+    private String folderId;
 
-    public GetFolderWithNotesResponseItemNote() {
+    public BriefNoteDescriptionResponse() {
     }
 
-    public GetFolderWithNotesResponseItemNote(String id, String title, String contents, Date timeUpdated, String folderEntityId) {
+    public BriefNoteDescriptionResponse(String id, String title, String contents, Date timeUpdated, String folderId) {
         this.id = id;
         this.title = title;
         this.timeUpdated = timeUpdated;
-        this.folderEntityId = folderEntityId;
+        this.folderId = folderId;
     }
 
     public String getId() {
@@ -42,11 +42,11 @@ public class GetFolderWithNotesResponseItemNote {
         this.timeUpdated = timeUpdated;
     }
 
-    public String getFolderEntityId() {
-        return folderEntityId;
+    public String getFolderId() {
+        return folderId;
     }
 
-    public void setFolderEntityId(String folderEntityId) {
-        this.folderEntityId = folderEntityId;
+    public void setFolderId(String folderId) {
+        this.folderId = folderId;
     }
 }

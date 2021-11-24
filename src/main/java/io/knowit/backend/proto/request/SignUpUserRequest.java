@@ -1,19 +1,12 @@
-package io.knowit.backend.io.entity;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+package io.knowit.backend.proto.request;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Document
-public class UserEntity {
-    @Id
-    private String id;
-
+public class SignUpUserRequest {
     @NotNull
     @Size(min = 5, max = 100)
-    private String username;
+    private String email;
 
     @NotNull
     @Size(min = 1, max = 50)
@@ -27,30 +20,19 @@ public class UserEntity {
     @Size(min = 6, max = 100)
     private String password;
 
-    public UserEntity() {
-    }
-
-    public UserEntity(String username, String firstName, String lastName, String password) {
-        this.username = username;
+    public SignUpUserRequest(String email, String firstName, String lastName, String password) {
+        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
     }
 
-    public String getId() {
-        return id;
+    public String getEmail() {
+        return email;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFirstName() {

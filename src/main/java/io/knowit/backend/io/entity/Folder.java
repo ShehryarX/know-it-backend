@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.Size;
 
-public class FolderEntity {
+public class Folder {
     @Id
     private String id;
 
@@ -19,15 +19,15 @@ public class FolderEntity {
 
     @NonNull
     @Size(min = 1)
-    private String userEntityId;
+    private String userId;
 
-    public FolderEntity() {
+    public Folder() {
     }
 
-    public FolderEntity(@NonNull @Size(min = 1) String title, @NonNull @Size(min = 1) String colour, @NonNull @Size(min = 1) String userEntityId) {
+    public Folder(@NonNull @Size(min = 1) String title, @NonNull @Size(min = 1) String colour, @NonNull @Size(min = 1) String userId) {
         this.title = title;
         this.colour = colour;
-        this.userEntityId = userEntityId;
+        this.userId = userId;
     }
 
     public String getId() {
@@ -57,11 +57,11 @@ public class FolderEntity {
     }
 
     @NonNull
-    public String getUserEntityId() {
-        return userEntityId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserEntityId(@NonNull String userEntityId) {
-        this.userEntityId = userEntityId;
+    public void setUserId(@NonNull String userId) {
+        this.userId = userId;
     }
 }

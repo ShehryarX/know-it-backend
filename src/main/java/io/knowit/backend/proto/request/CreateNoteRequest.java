@@ -1,4 +1,4 @@
-package io.knowit.backend.proto;
+package io.knowit.backend.proto.request;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -10,11 +10,11 @@ public class CreateNoteRequest {
 
     @NotNull
     @Size(min = 1)
-    private String folderEntityId;
+    private String folderId;
 
-    public CreateNoteRequest(String title, String folderEntityId) {
+    public CreateNoteRequest(String title, String folderId) {
         this.title = title;
-        this.folderEntityId = folderEntityId;
+        this.folderId = folderId;
     }
 
     public String getTitle() {
@@ -25,11 +25,11 @@ public class CreateNoteRequest {
         this.title = title;
     }
 
-    public String getFolderEntityId() {
-        return folderEntityId;
+    public String getfolderId() {
+        return folderId;
     }
 
-    public void setFolderEntityId(String folderEntityId) {
-        this.folderEntityId = folderEntityId;
+    public void setfolderId(String folderId) {
+        this.folderId = folderId;
     }
 }

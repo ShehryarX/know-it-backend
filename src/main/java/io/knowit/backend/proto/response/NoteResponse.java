@@ -1,23 +1,23 @@
-package io.knowit.backend.proto;
+package io.knowit.backend.proto.response;
 
 import java.util.Date;
 
-public class UpdateNoteResponse {
+public class NoteResponse {
     private String id;
     private String title;
     private String contents;
     private Date timeUpdated;
-    private String folderEntityId;
+    private String folderId;
 
-    public UpdateNoteResponse() {
+    public NoteResponse() {
     }
 
-    public UpdateNoteResponse(String id, String title, String contents, Date timeUpdated, String folderEntityId) {
+    public NoteResponse(String id, String title, String contents, Date timeUpdated, String folderId) {
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.timeUpdated = timeUpdated;
-        this.folderEntityId = folderEntityId;
+        this.folderId = folderId;
     }
 
     public String getId() {
@@ -52,11 +52,11 @@ public class UpdateNoteResponse {
         this.timeUpdated = timeUpdated;
     }
 
-    public String getFolderEntityId() {
-        return folderEntityId;
+    public String getfolderId() {
+        return folderId;
     }
 
-    public void setFolderEntityId(String folderEntityId) {
-        this.folderEntityId = folderEntityId;
+    public void setfolderId(String folderId) {
+        this.folderId = folderId;
     }
 }

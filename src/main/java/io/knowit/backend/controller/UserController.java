@@ -1,10 +1,9 @@
 package io.knowit.backend.controller;
 
-import io.knowit.backend.proto.SignUpUserRequest;
+import io.knowit.backend.proto.request.SignUpUserRequest;
 import io.knowit.backend.io.entity.UserEntity;
 import io.knowit.backend.service.ApplicationUserService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

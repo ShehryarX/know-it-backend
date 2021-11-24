@@ -1,14 +1,17 @@
-package io.knowit.backend.proto;
+package io.knowit.backend.proto.response;
 
-public class UpdateNoteRequest {
+public class FolderResponse {
     private String id;
     private String title;
-    private String contents;
+    private String colour;
 
-    public UpdateNoteRequest(String id, String title, String contents) {
+    public FolderResponse() {
+    }
+
+    public FolderResponse(String id, String title, String colour) {
         this.id = id;
         this.title = title;
-        this.contents = contents;
+        this.colour = colour;
     }
 
     public String getId() {
@@ -27,11 +30,11 @@ public class UpdateNoteRequest {
         this.title = title;
     }
 
-    public String getContents() {
-        return contents;
+    public String getColour() {
+        return colour;
     }
 
-    public void setContents(String contents) {
-        this.contents = contents;
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 }

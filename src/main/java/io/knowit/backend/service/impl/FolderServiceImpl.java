@@ -1,14 +1,15 @@
 package io.knowit.backend.service.impl;
 
-import io.knowit.backend.exception.FolderNotFoundException;
-import io.knowit.backend.io.entity.FolderEntity;
+import io.knowit.backend.io.entity.Folder;
 import io.knowit.backend.io.repository.FolderRepository;
 import io.knowit.backend.service.FolderService;
+import io.knowit.backend.shared.dto.FolderDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FolderServiceImpl implements FolderService {
@@ -19,25 +20,42 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public void createFolder(FolderEntity folder) throws Exception {
+    public FolderDto createFolder(FolderDto folderDto) {
+        Folder folder = new Folder();
+        BeanUtils.copyProperties(folderDto, folder);
         folderRepository.save(folder);
+        BeanUtils.copyProperties(folder, folderDto);
+        return folderDto;
     }
 
     @Override
-    public void deleteFolder(FolderEntity folder) throws Exception {
-        folderRepository.deleteByIdAndUserEntityId(folder.getId(), folder.getUserEntityId());
+    public void deleteFolder(FolderDto folderDto) {
+        Folder folder = new Folder();
+        BeanUtils.copyProperties(folderDto, folder);
+        folderRepository.deleteByIdAndUserId(folder.getId(), folder.getUserId());
     }
 
     @Override
-    public void updateFolder(FolderEntity folder) throws Exception {
-        FolderEntity entity = folderRepository.findByIdAndUserEntityId(folder.getId(), folder.getUserEntityId());
-        entity.setTitle(folder.getTitle());
-        entity.setColour(folder.getColour());
-        folderRepository.save(entity);
+    public FolderDto updateFolder(FolderDto folderDto) {
+        Folder folder = folderRepository.findByIdAndUserId(folderDto.getId(), folderDto.getUserId());
+        folder.setTitle(folderDto.getTitle());
+        folder.setColour(folderDto.getColour());
+        folderRepository.save(folder);
+        BeanUtils.copyProperties(folder, folderDto);
+        return folderDto;
     }
 
     @Override
-    public List<FolderEntity> getAllFolders(String userId) {
-        return folderRepository.findAllByUserEntityId(userId);
+    public List<FolderDto> getAllFolders(String userId) {
+        List<Folder> folders = folderRepository.findAllByUserId(userId);
+        List<FolderDto> foldersDtos = new ArrayList<>();
+
+        for (Folder folder : folders) {
+            FolderDto folderDto = new FolderDto();
+            BeanUtils.copyProperties(folder, folderDto);
+            foldersDtos.add(folderDto);
+        }
+
+        return foldersDtos;
     }
 }

@@ -1,10 +1,14 @@
 package io.knowit.backend.controller;
 
-import io.knowit.backend.io.entity.FolderEntity;
-import io.knowit.backend.io.entity.NoteEntity;
-import io.knowit.backend.proto.*;
+import io.knowit.backend.proto.request.CreateFolderRequest;
+import io.knowit.backend.proto.request.UpdateFolderRequest;
+import io.knowit.backend.proto.response.FolderResponse;
+import io.knowit.backend.proto.response.GetFolderWithNotesResponse;
+import io.knowit.backend.proto.response.BriefNoteDescriptionResponse;
 import io.knowit.backend.service.FolderService;
 import io.knowit.backend.service.NoteService;
+import io.knowit.backend.shared.dto.FolderDto;
+import io.knowit.backend.shared.dto.NoteDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,92 +30,91 @@ public class FolderController {
     }
 
     @GetMapping(value = "", consumes = "application/json", produces = "application/json")
-    public List<GetFoldersResponseItem> getFolders() throws Exception {
+    public List<FolderResponse> getFolders() throws Exception {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userId = auth.getName();
 
-        List<FolderEntity> folders = this.folderService.getAllFolders(userId);
+        List<FolderDto> folders = this.folderService.getAllFolders(userId);
+        List<FolderResponse> response = new ArrayList<>();
 
-        List<GetFoldersResponseItem> items = new ArrayList<>();
-
-        for (FolderEntity folder : folders) {
-            GetFoldersResponseItem item = new GetFoldersResponseItem();
+        for (FolderDto folder : folders) {
+            FolderResponse item = new FolderResponse();
             BeanUtils.copyProperties(folder, item);
-            items.add(item);
+            response.add(item);
         }
 
-        return items;
+        return response;
     }
 
     @PostMapping(value = "", consumes = "application/json", produces = "application/json")
-    public CreateFolderResponse createFolder(@Valid @RequestBody CreateFolderRequest createFolderRequest) throws Exception {
+    public FolderResponse createFolder(@Valid @RequestBody CreateFolderRequest createFolderRequest) throws Exception {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        FolderEntity folderEntity = new FolderEntity();
-        BeanUtils.copyProperties(createFolderRequest, folderEntity);
+        FolderDto folderDto = new FolderDto();
+        BeanUtils.copyProperties(createFolderRequest, folderDto);
 
         String userId = auth.getName();
-        folderEntity.setUserEntityId(userId);
+        folderDto.setUserId(userId);
 
-        this.folderService.createFolder(folderEntity);
+        FolderDto createdFolded = this.folderService.createFolder(folderDto);
 
-        CreateFolderResponse folder = new CreateFolderResponse();
-        BeanUtils.copyProperties(folderEntity, folder);
+        FolderResponse response = new FolderResponse();
+        BeanUtils.copyProperties(createdFolded, response);
 
-        return folder;
+        return response;
     }
 
     @PutMapping(value = "", consumes = "application/json", produces = "application/json")
-    public UpdateFolderResponse updateFolder(@Valid @RequestBody UpdateFolderRequest updateFolderRequest) throws Exception {
+    public FolderResponse updateFolder(@Valid @RequestBody UpdateFolderRequest updateFolderRequest) throws Exception {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        FolderEntity folderEntity = new FolderEntity();
-        BeanUtils.copyProperties(updateFolderRequest, folderEntity);
+        FolderDto folderDto = new FolderDto();
+        BeanUtils.copyProperties(updateFolderRequest, folderDto);
 
         String userId = auth.getName();
-        folderEntity.setUserEntityId(userId);
+        folderDto.setUserId(userId);
 
-        this.folderService.updateFolder(folderEntity);
+        FolderDto updatedFolder = this.folderService.updateFolder(folderDto);
 
-        UpdateFolderResponse folder = new UpdateFolderResponse();
-        BeanUtils.copyProperties(folderEntity, folder);
+        FolderResponse response = new FolderResponse();
+        BeanUtils.copyProperties(updatedFolder, response);
 
-        return folder;
+        return response;
     }
 
     @DeleteMapping(value = "", consumes = "application/json", produces = "application/json")
     public void deleteFolder(@RequestParam("id") String folderId) throws Exception {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        FolderEntity folderEntity = new FolderEntity();
-        folderEntity.setId(folderId);
+        FolderDto folder = new FolderDto();
+        folder.setId(folderId);
 
         String userId = auth.getName();
-        folderEntity.setUserEntityId(userId);
+        folder.setUserId(userId);
 
-        this.folderService.deleteFolder(folderEntity);
+        this.folderService.deleteFolder(folder);
     }
 
     @GetMapping(value = "/with-notes", consumes = "application/json", produces = "application/json")
-    public List<GetFolderWithNotesResponseItem> getFoldersWithNotes() throws Exception {
+    public List<GetFolderWithNotesResponse> getFoldersWithNotes() throws Exception {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userId = auth.getName();
 
-        List<GetFolderWithNotesResponseItem> foldersWithNotes = new ArrayList<>();
-        List<FolderEntity> folders = this.folderService.getAllFolders(userId);
+        List<GetFolderWithNotesResponse> foldersWithNotes = new ArrayList<>();
+        List<FolderDto> folders = this.folderService.getAllFolders(userId);
 
-        for (FolderEntity folder : folders) {
-            GetFolderWithNotesResponseItem item = new GetFolderWithNotesResponseItem();
+        for (FolderDto folder : folders) {
+            GetFolderWithNotesResponse item = new GetFolderWithNotesResponse();
             BeanUtils.copyProperties(folder, item);
 
-            NoteEntity queryNote = new NoteEntity();
-            queryNote.setFolderEntityId(folder.getId());
-            queryNote.setUserEntityId(userId);
+            NoteDto noteDto = new NoteDto();
+            noteDto.setFolderId(folder.getId());
+            noteDto.setUserId(userId);
 
-            List<NoteEntity> notes = this.noteService.getNotesInFolder(queryNote);
+            List<NoteDto> notes = this.noteService.getNotesInFolder(noteDto);
 
-            for (NoteEntity note : notes) {
-                GetFolderWithNotesResponseItemNote noteItem = new GetFolderWithNotesResponseItemNote();
+            for (NoteDto note : notes) {
+                BriefNoteDescriptionResponse noteItem = new BriefNoteDescriptionResponse();
                 BeanUtils.copyProperties(note, noteItem);
                 item.addNote(noteItem);
             }

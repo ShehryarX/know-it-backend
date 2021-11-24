@@ -1,33 +1,20 @@
-package io.knowit.backend.proto;
+package io.knowit.backend.proto.request;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class UpdateFolderRequest {
-    @NotNull
-    @Size(min = 1)
-    private String id;
-
+public class CreateFolderRequest {
     @NotNull
     @Size(min = 1)
     private String title;
 
     @NotNull
+    @Size(min = 1)
     private String colour;
 
-    public UpdateFolderRequest(@NotNull @Size(min = 1) String id, @NotNull @Size(min = 1) String title, @NotNull String colour) {
-        this.id = id;
+    public CreateFolderRequest(@NotNull @Size(min = 1) String title, @NotNull String colour) {
         this.title = title;
         this.colour = colour;
-    }
-
-    @NotNull
-    public String getId() {
-        return id;
-    }
-
-    public void setId(@NotNull String id) {
-        this.id = id;
     }
 
     @NotNull

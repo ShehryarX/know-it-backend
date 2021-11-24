@@ -1,15 +1,16 @@
 package io.knowit.backend.controller;
 
-import io.knowit.backend.io.entity.NoteEntity;
-import io.knowit.backend.proto.*;
+import io.knowit.backend.proto.request.CreateNoteRequest;
+import io.knowit.backend.proto.request.UpdateNoteRequest;
+import io.knowit.backend.proto.response.NoteResponse;
 import io.knowit.backend.service.NoteService;
+import io.knowit.backend.shared.dto.NoteDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 
 @RestController
 @RequestMapping("/notes")
@@ -22,74 +23,68 @@ public class NoteController {
     }
 
     @GetMapping(value = "", consumes = "application/json", produces = "application/json")
-    public GetNoteResponse getNote(@RequestParam("id") String noteId) throws Exception {
+    public NoteResponse getNote(@RequestParam("id") String noteId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        NoteEntity noteEntity = new NoteEntity();
-        noteEntity.setId(noteId);
+        NoteDto noteDto = new NoteDto();
+        noteDto.setId(noteId);
 
         String userId = auth.getName();
-        noteEntity.setUserEntityId(userId);
+        noteDto.setUserId(userId);
 
-        NoteEntity note = this.noteService.getNote(noteEntity);
+        NoteDto note = this.noteService.getNote(noteDto);
 
-        GetNoteResponse response = new GetNoteResponse();
+        NoteResponse response = new NoteResponse();
         BeanUtils.copyProperties(note, response);
 
         return response;
     }
 
     @PostMapping(value = "", consumes = "application/json", produces = "application/json")
-    public CreateNoteResponse createNote(@Valid @RequestBody CreateNoteRequest noteRequest) throws Exception {
+    public NoteResponse createNote(@Valid @RequestBody CreateNoteRequest noteRequest) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        NoteEntity noteEntity = new NoteEntity();
-        noteEntity.setTitle(noteRequest.getTitle());
-        noteEntity.setFolderEntityId(noteRequest.getFolderEntityId());
-        noteEntity.setContents("");
-        noteEntity.setTimeUpdated(new Date());
+        NoteDto noteDto = new NoteDto();
+        BeanUtils.copyProperties(noteRequest, noteDto);
 
         String userId = auth.getName();
-        noteEntity.setUserEntityId(userId);
+        noteDto.setUserId(userId);
 
-        NoteEntity note = this.noteService.createNote(noteEntity);
+        NoteDto note = this.noteService.createNote(noteDto);
 
-        CreateNoteResponse response = new CreateNoteResponse();
+        NoteResponse response = new NoteResponse();
         BeanUtils.copyProperties(note, response);
 
         return response;
     }
 
     @PutMapping(value = "", consumes = "application/json", produces = "application/json")
-    public UpdateNoteResponse updateNote(@Valid @RequestBody UpdateNoteRequest updatedNote) throws Exception {
+    public NoteResponse updateNote(@Valid @RequestBody UpdateNoteRequest updatedNote) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        NoteEntity noteEntity = new NoteEntity();
-        noteEntity.setId(updatedNote.getId());
-        noteEntity.setTitle(updatedNote.getTitle());
-        noteEntity.setContents(updatedNote.getContents());
-
+        NoteDto noteDto = new NoteDto();
+        BeanUtils.copyProperties(updatedNote, noteDto);
         String userId = auth.getName();
-        noteEntity.setUserEntityId(userId);
+        noteDto.setUserId(userId);
 
-        NoteEntity newNote = this.noteService.updateNote(noteEntity);
+        NoteDto newNote = this.noteService.updateNote(noteDto);
 
-        UpdateNoteResponse note = new UpdateNoteResponse();
+        NoteResponse note = new NoteResponse();
         BeanUtils.copyProperties(newNote, note);
 
         return note;
     }
 
     @DeleteMapping(value = "", consumes = "application/json", produces = "application/json")
-    public void deleteNote(@RequestParam("id") String noteId) throws Exception {
+    public void deleteNote(@RequestParam("id") String noteId){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        NoteEntity noteEntity = new NoteEntity();
-        noteEntity.setId(noteId);
+        NoteDto noteDto = new NoteDto();
+        noteDto.setId(noteId);
 
         String userId = auth.getName();
-        noteEntity.setUserEntityId(userId);
+        noteDto.setUserId(userId);
 
-        this.noteService.deleteNote(noteEntity);
+        this.noteService.deleteNote(noteDto);
     }
 }

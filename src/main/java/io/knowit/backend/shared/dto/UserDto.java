@@ -1,38 +1,37 @@
-package io.knowit.backend.proto;
+package io.knowit.backend.shared.dto;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-public class SignUpUserRequest {
-    @NotNull
-    @Size(min = 5, max = 100)
-    private String email;
-
-    @NotNull
-    @Size(min = 2, max = 50)
+public class UserDto {
+    private String id;
+    private String username;
     private String firstName;
-
-    @NotNull
-    @Size(min = 2, max = 50)
     private String lastName;
-
-    @NotNull
-    @Size(min = 5, max = 100)
     private String password;
 
-    public SignUpUserRequest(String email, String firstName, String lastName, String password) {
-        this.email = email;
+    public UserDto() {
+    }
+
+    public UserDto(String id, String username, String firstName, String lastName, String password) {
+        this.id = id;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getId() {
+        return id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {

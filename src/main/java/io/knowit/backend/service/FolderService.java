@@ -1,12 +1,12 @@
 package io.knowit.backend.service;
 
-import io.knowit.backend.io.entity.FolderEntity;
+import io.knowit.backend.shared.dto.FolderDto;
 
 import java.util.List;
 
 public interface FolderService {
-    void createFolder(FolderEntity folder) throws Exception;
-    void deleteFolder(FolderEntity deleteFolderRequest) throws Exception;
-    void updateFolder(FolderEntity renameFolderRequest) throws Exception;
-    List<FolderEntity> getAllFolders(String userId);
+    FolderDto createFolder(FolderDto folder) throws Exception;
+    FolderDto updateFolder(FolderDto renameFolderRequest) throws Exception;
+    List<FolderDto> getAllFolders(String userId) throws Exception;
+    void deleteFolder(FolderDto deleteFolderRequest) throws Exception;
 }

@@ -1,12 +1,11 @@
-package io.knowit.backend.proto;
-
-import org.springframework.data.annotation.Id;
+package io.knowit.backend.proto.request;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class CreateFolderResponse {
-    @Id
+public class UpdateFolderRequest {
+    @NotNull
+    @Size(min = 1)
     private String id;
 
     @NotNull
@@ -16,20 +15,18 @@ public class CreateFolderResponse {
     @NotNull
     private String colour;
 
-    public CreateFolderResponse() {
-    }
-
-    public CreateFolderResponse(String id, @NotNull @Size(min = 1) String title, @NotNull String colour) {
+    public UpdateFolderRequest(@NotNull @Size(min = 1) String id, @NotNull @Size(min = 1) String title, @NotNull String colour) {
         this.id = id;
         this.title = title;
         this.colour = colour;
     }
 
+    @NotNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NotNull String id) {
         this.id = id;
     }
 
@@ -51,3 +48,5 @@ public class CreateFolderResponse {
         this.colour = colour;
     }
 }
+
+

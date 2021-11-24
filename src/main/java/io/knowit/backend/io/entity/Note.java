@@ -7,14 +7,16 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
-public class NoteEntity {
+public class Note {
     @Id
     private String id;
 
     @NonNull
+    @Size(min = 1)
     private String title;
 
     @NonNull
+    @Size(min = 1)
     private String contents;
 
     @LastModifiedDate
@@ -22,21 +24,21 @@ public class NoteEntity {
 
     @NonNull
     @Size(min = 1)
-    private String folderEntityId;
+    private String folderId;
 
     @NonNull
     @Size(min = 1)
-    private String userEntityId;
+    private String userId;
 
-    public NoteEntity() {
+    public Note() {
     }
 
-    public NoteEntity(@NonNull String title, @NonNull String contents, Date timeUpdated, @NonNull @Size(min = 1) String folderEntityId, @NonNull @Size(min = 1) String userEntityId) {
+    public Note(@NonNull String title, @NonNull String contents, Date timeUpdated, @NonNull @Size(min = 1) String folderId, @NonNull @Size(min = 1) String userId) {
         this.title = title;
         this.contents = contents;
         this.timeUpdated = timeUpdated;
-        this.folderEntityId = folderEntityId;
-        this.userEntityId = userEntityId;
+        this.folderId = folderId;
+        this.userId = userId;
     }
 
     public String getId() {
@@ -74,20 +76,20 @@ public class NoteEntity {
     }
 
     @NonNull
-    public String getFolderEntityId() {
-        return folderEntityId;
+    public String getFolderId() {
+        return folderId;
     }
 
-    public void setFolderEntityId(@NonNull String folderEntityId) {
-        this.folderEntityId = folderEntityId;
+    public void setFolderId(@NonNull String folderId) {
+        this.folderId = folderId;
     }
 
     @NonNull
-    public String getUserEntityId() {
-        return userEntityId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserEntityId(@NonNull String userEntityId) {
-        this.userEntityId = userEntityId;
+    public void setUserId(@NonNull String userId) {
+        this.userId = userId;
     }
 }
