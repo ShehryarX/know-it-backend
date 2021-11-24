@@ -1,16 +1,9 @@
-package io.knowit.backend.io.model;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+package io.knowit.backend.proto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Document
-public class ApplicationUser {
-    @Id
-    private String id;
-
+public class SignUpUserRequest {
     @NotNull
     @Size(min = 5, max = 100)
     private String username;
@@ -27,22 +20,11 @@ public class ApplicationUser {
     @Size(min = 5, max = 100)
     private String password;
 
-    public ApplicationUser() {
-    }
-
-    public ApplicationUser(String username, String firstName, String lastName, String password) {
+    public SignUpUserRequest(String username, String firstName, String lastName, String password) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUsername() {

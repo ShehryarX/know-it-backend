@@ -1,33 +1,31 @@
 package io.knowit.backend.controller;
 
+import io.knowit.backend.proto.SignUpUserRequest;
 import io.knowit.backend.io.model.ApplicationUser;
-import io.knowit.backend.io.repository.ApplicationUserRepository;
+import io.knowit.backend.service.ApplicationUserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    private ApplicationUserRepository applicationUserRepository;
+    private ApplicationUserService applicationUserService;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    public UserController(ApplicationUserRepository applicationUserRepository,
-                          BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.applicationUserRepository = applicationUserRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    public UserController(ApplicationUserService applicationUserService) {
+        this.applicationUserService = applicationUserService;
     }
 
-    @PostMapping("/sign-up")
-    public void signUp(@RequestBody ApplicationUser user) {
-        System.out.println(user);
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        applicationUserRepository.save(user);
+    @PostMapping(value = "/sign-up", consumes = "application/json", produces = "application/json")
+    public void signUp(@Valid @RequestBody SignUpUserRequest user) throws Exception {
+        ApplicationUser applicationUser = new ApplicationUser();
+        BeanUtils.copyProperties(user, applicationUser);
+        this.applicationUserService.signUpUser(applicationUser);
     }
 }

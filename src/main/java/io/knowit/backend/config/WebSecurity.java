@@ -1,8 +1,7 @@
 package io.knowit.backend.config;
 
 
-import io.knowit.backend.service.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.knowit.backend.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

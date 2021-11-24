@@ -1,4 +1,4 @@
-package io.knowit.backend.service;
+package io.knowit.backend.service.impl;
 
 import io.knowit.backend.io.model.ApplicationUser;
 import io.knowit.backend.io.repository.ApplicationUserRepository;
