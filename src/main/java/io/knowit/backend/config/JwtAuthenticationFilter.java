@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.knowit.backend.io.entity.UserEntity;
+import io.knowit.backend.io.repository.UserEntityRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,9 +23,12 @@ import static io.knowit.backend.config.SecurityConstants.*;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
+    private UserEntityRepository userEntityRepository;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
+                                    UserEntityRepository userEntityRepository) {
         this.authenticationManager = authenticationManager;
+        this.userEntityRepository = userEntityRepository;
     }
 
     @Override
@@ -33,9 +37,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             UserEntity creds = new ObjectMapper()
                     .readValue(req.getInputStream(), UserEntity.class);
+            UserEntity user = this.userEntityRepository.findByUsername(creds.getUsername());
+
+            if (user == null) {
+                throw new RuntimeException("User not registered");
+            }
+
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            creds.getUsername(),
+                            user.getId(),
                             creds.getPassword(),
                             new ArrayList<>())
             );

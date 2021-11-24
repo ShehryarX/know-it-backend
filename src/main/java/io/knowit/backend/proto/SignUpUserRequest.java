@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 public class SignUpUserRequest {
     @NotNull
     @Size(min = 5, max = 100)
-    private String username;
+    private String email;
 
     @NotNull
     @Size(min = 2, max = 50)
@@ -20,19 +20,19 @@ public class SignUpUserRequest {
     @Size(min = 5, max = 100)
     private String password;
 
-    public SignUpUserRequest(String username, String firstName, String lastName, String password) {
-        this.username = username;
+    public SignUpUserRequest(String email, String firstName, String lastName, String password) {
+        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFirstName() {

@@ -15,7 +15,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    @Autowired
     private ApplicationUserService applicationUserService;
 
     public UserController(ApplicationUserService applicationUserService) {
@@ -26,6 +25,7 @@ public class UserController {
     public void signUp(@Valid @RequestBody SignUpUserRequest user) throws Exception {
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(user, userEntity);
+        userEntity.setUsername(user.getEmail());
         this.applicationUserService.signUpUser(userEntity);
     }
 }

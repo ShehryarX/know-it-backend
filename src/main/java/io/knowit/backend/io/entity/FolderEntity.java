@@ -14,18 +14,20 @@ public class FolderEntity {
     private String title;
 
     @NonNull
+    @Size(min = 1)
     private String colour;
 
     @NonNull
-    private UserEntity userEntity;
+    @Size(min = 1)
+    private String userEntityId;
 
     public FolderEntity() {
     }
 
-    public FolderEntity(@NonNull @Size(min = 1) String title, @NonNull String colour, @NonNull UserEntity userEntity) {
+    public FolderEntity(@NonNull @Size(min = 1) String title, @NonNull @Size(min = 1) String colour, @NonNull @Size(min = 1) String userEntityId) {
         this.title = title;
         this.colour = colour;
-        this.userEntity = userEntity;
+        this.userEntityId = userEntityId;
     }
 
     public String getId() {
@@ -55,11 +57,11 @@ public class FolderEntity {
     }
 
     @NonNull
-    public UserEntity getUserEntity() {
-        return userEntity;
+    public String getUserEntityId() {
+        return userEntityId;
     }
 
-    public void setUserEntity(@NonNull UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public void setUserEntityId(@NonNull String userEntityId) {
+        this.userEntityId = userEntityId;
     }
 }

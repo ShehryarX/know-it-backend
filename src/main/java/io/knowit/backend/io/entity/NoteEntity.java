@@ -4,6 +4,7 @@ import com.mongodb.lang.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class NoteEntity {
@@ -20,13 +21,22 @@ public class NoteEntity {
     private Date timeUpdated;
 
     @NonNull
-    private FolderEntity folderEntity;
+    @Size(min = 1)
+    private String folderEntityId;
 
-    public NoteEntity(@NonNull String title, @NonNull String contents, Date timeUpdated, @NonNull FolderEntity folderEntity) {
+    @NonNull
+    @Size(min = 1)
+    private String userEntityId;
+
+    public NoteEntity() {
+    }
+
+    public NoteEntity(@NonNull String title, @NonNull String contents, Date timeUpdated, @NonNull @Size(min = 1) String folderEntityId, @NonNull @Size(min = 1) String userEntityId) {
         this.title = title;
         this.contents = contents;
         this.timeUpdated = timeUpdated;
-        this.folderEntity = folderEntity;
+        this.folderEntityId = folderEntityId;
+        this.userEntityId = userEntityId;
     }
 
     public String getId() {
@@ -64,11 +74,20 @@ public class NoteEntity {
     }
 
     @NonNull
-    public FolderEntity getFolderEntity() {
-        return folderEntity;
+    public String getFolderEntityId() {
+        return folderEntityId;
     }
 
-    public void setFolderEntity(@NonNull FolderEntity folderEntity) {
-        this.folderEntity = folderEntity;
+    public void setFolderEntityId(@NonNull String folderEntityId) {
+        this.folderEntityId = folderEntityId;
+    }
+
+    @NonNull
+    public String getUserEntityId() {
+        return userEntityId;
+    }
+
+    public void setUserEntityId(@NonNull String userEntityId) {
+        this.userEntityId = userEntityId;
     }
 }
