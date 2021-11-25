@@ -1,6 +1,5 @@
 package io.knowit.backend.service.impl;
 
-import io.knowit.backend.exception.UserAlreadyExistsException;
 import io.knowit.backend.io.entity.UserEntity;
 import io.knowit.backend.io.repository.UserEntityRepository;
 import io.knowit.backend.service.ApplicationUserService;
@@ -26,7 +25,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         if (userEntityRepository.findByUsername(user.getUsername()) != null) {
-            throw new UserAlreadyExistsException();
+            throw new Exception("Username already exists!");
         }
 
         userEntityRepository.save(user);
