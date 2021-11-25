@@ -3,9 +3,13 @@ package io.knowit.backend.service.impl;
 import io.knowit.backend.io.entity.UserEntity;
 import io.knowit.backend.io.repository.UserEntityRepository;
 import io.knowit.backend.service.ApplicationUserService;
+import io.knowit.backend.shared.dto.UserDto;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ApplicationUserServiceImpl implements ApplicationUserService {
@@ -29,5 +33,17 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
         }
 
         userEntityRepository.save(user);
+    }
+
+    @Override
+    public UserDto getUserDetails(UserDto userDto) throws Exception {
+        Optional<UserEntity> user = userEntityRepository.findById(userDto.getId());
+
+        if (!user.isPresent()) {
+            throw new Exception("User ID not found.");
+        }
+
+        BeanUtils.copyProperties(user.get(), userDto);
+        return userDto;
     }
 }

@@ -2,12 +2,13 @@ package io.knowit.backend.controller;
 
 import io.knowit.backend.proto.request.SignUpUserRequest;
 import io.knowit.backend.io.entity.UserEntity;
+import io.knowit.backend.proto.response.GetUserDetailsResponse;
 import io.knowit.backend.service.ApplicationUserService;
+import io.knowit.backend.shared.dto.UserDto;
 import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -26,5 +27,21 @@ public class UserController {
         BeanUtils.copyProperties(user, userEntity);
         userEntity.setUsername(user.getEmail());
         this.applicationUserService.signUpUser(userEntity);
+    }
+
+    @GetMapping(value = "/detail", consumes = "application/json", produces = "application/json")
+    public GetUserDetailsResponse getUserData() throws Exception {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        UserDto userDto = new UserDto();
+        String userId = auth.getName();
+        userDto.setId(userId);
+
+        UserDto userDetails = applicationUserService.getUserDetails(userDto);
+
+        GetUserDetailsResponse response = new GetUserDetailsResponse();
+        BeanUtils.copyProperties(userDetails, response);
+
+        return response;
     }
 }
