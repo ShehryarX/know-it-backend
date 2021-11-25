@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * TODO: Add verbose exception handling...
+ * TODO: Return list of errors for invalid requests...
  */
 @SpringBootApplication
 public class BackendApplication {

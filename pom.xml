@@ -82,6 +82,29 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>cz.habarta.typescript-generator</groupId>
+                <artifactId>typescript-generator-maven-plugin</artifactId>
+                <version>2.23.603</version>
+                <executions>
+                    <execution>
+                        <id>generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jsonLibrary>jackson2</jsonLibrary>
+                    <classPatterns>
+                        <pattern>io.knowit.backend.proto.**</pattern>
+                    </classPatterns>
+                    <outputFile>app/src/endpoints.d.ts</outputFile>
+                    <outputKind>global</outputKind>
+                    <namespace>INetwork</namespace>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

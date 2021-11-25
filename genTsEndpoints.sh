@@ -1,0 +1,1 @@
+./mvnw typescript-generator:generate
