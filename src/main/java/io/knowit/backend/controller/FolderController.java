@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/folders")
+@RequestMapping("folders")
 public class FolderController {
     private FolderService folderService;
     private NoteService noteService;

@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+/**
+ * TODO: Add verbose exception handling...
+ */
 @SpringBootApplication
 public class BackendApplication {
     @Bean
