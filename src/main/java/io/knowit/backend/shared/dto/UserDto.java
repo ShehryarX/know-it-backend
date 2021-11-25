@@ -10,6 +10,13 @@ public class UserDto {
     public UserDto() {
     }
 
+    public UserDto(String username, String firstName, String lastName, String password) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+    }
+
     public UserDto(String id, String username, String firstName, String lastName, String password) {
         this.id = id;
         this.username = username;
