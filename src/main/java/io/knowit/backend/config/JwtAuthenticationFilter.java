@@ -85,10 +85,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         ObjectMapper mapper = new ObjectMapper();
         GetUserDetailsResponse responseBody = new GetUserDetailsResponse();
+        String authToken = TOKEN_PREFIX + token;
 
         BeanUtils.copyProperties(user.get(), responseBody);
+        responseBody.setAuthToken(authToken);
 
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
         res.getWriter().write(mapper.writeValueAsString(responseBody));
     }

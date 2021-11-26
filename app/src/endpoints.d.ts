@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.23.603 on 2020-05-24 01:56:33.
+// Generated using typescript-generator version 2.23.603 on 2020-05-26 02:35:59.
 
 declare namespace INetwork {
 
@@ -48,6 +48,14 @@ declare namespace INetwork {
 
     interface GetFolderWithNotesResponse extends FolderResponse {
         notes: BriefNoteDescriptionResponse[];
+    }
+
+    interface GetUserDetailsResponse {
+        id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        authToken: string;
     }
 
     interface NoteResponse {

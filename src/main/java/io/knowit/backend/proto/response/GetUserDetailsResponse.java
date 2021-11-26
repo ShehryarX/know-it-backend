@@ -5,15 +5,17 @@ public class GetUserDetailsResponse {
     private String username;
     private String firstName;
     private String lastName;
+    private String authToken;
 
     public GetUserDetailsResponse() {
     }
 
-    public GetUserDetailsResponse(String id, String username, String firstName, String lastName) {
+    public GetUserDetailsResponse(String id, String username, String firstName, String lastName, String authToken) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.authToken = authToken;
     }
 
     public String getId() {
@@ -46,5 +48,13 @@ public class GetUserDetailsResponse {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 }
