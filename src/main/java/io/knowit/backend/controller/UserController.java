@@ -1,53 +1,26 @@
 package io.knowit.backend.controller;
 
-import io.knowit.backend.exception.BodyValidationException;
-import io.knowit.backend.proto.request.SignUpUserRequest;
-import io.knowit.backend.io.entity.UserEntity;
-import io.knowit.backend.proto.response.GetUserDetailsResponse;
-import io.knowit.backend.service.ApplicationUserService;
-import io.knowit.backend.shared.dto.UserDto;
-import org.springframework.beans.BeanUtils;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.Errors;
+import io.knowit.backend.exception.ResourceNotFoundException;
+import io.knowit.backend.io.repository.UserEntityRepository;
+import io.knowit.backend.io.entity.User;
+import io.knowit.backend.security.CurrentUser;
+import io.knowit.backend.security.UserPrincipal;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("users")
 public class UserController {
-    private ApplicationUserService applicationUserService;
 
-    public UserController(ApplicationUserService applicationUserService) {
-        this.applicationUserService = applicationUserService;
-    }
+    // TODO: Use the User Service, not REPOSITORY!
+    @Autowired
+    private UserEntityRepository userRepository;
 
-    @PostMapping(value = "/sign-up", consumes = "application/json", produces = "application/json")
-    public void signUp(@Valid @RequestBody SignUpUserRequest user, Errors errors) throws Exception {
-        if (errors.hasErrors()) {
-            throw new BodyValidationException(errors);
-        }
-
-        UserEntity userEntity = new UserEntity();
-        BeanUtils.copyProperties(user, userEntity);
-        userEntity.setUsername(user.getEmail());
-        this.applicationUserService.signUpUser(userEntity);
-    }
-
-    @GetMapping(value = "/detail", consumes = "application/json", produces = "application/json")
-    public GetUserDetailsResponse getUserData() throws Exception {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        UserDto userDto = new UserDto();
-        String userId = auth.getName();
-        userDto.setId(userId);
-
-        UserDto userDetails = applicationUserService.getUserDetails(userDto);
-
-        GetUserDetailsResponse response = new GetUserDetailsResponse();
-        BeanUtils.copyProperties(userDetails, response);
-
-        return response;
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('USER')")
+    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+        return userRepository.findById(userPrincipal.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 }

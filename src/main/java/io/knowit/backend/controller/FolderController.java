@@ -6,11 +6,14 @@ import io.knowit.backend.proto.request.UpdateFolderRequest;
 import io.knowit.backend.proto.response.FolderResponse;
 import io.knowit.backend.proto.response.GetFolderWithNotesResponse;
 import io.knowit.backend.proto.response.BriefNoteDescriptionResponse;
+import io.knowit.backend.security.CurrentUser;
+import io.knowit.backend.security.UserPrincipal;
 import io.knowit.backend.service.FolderService;
 import io.knowit.backend.service.NoteService;
 import io.knowit.backend.shared.dto.FolderDto;
 import io.knowit.backend.shared.dto.NoteDto;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
@@ -32,11 +35,9 @@ public class FolderController {
     }
 
     @GetMapping(value = "", consumes = "application/json", produces = "application/json")
-    public List<FolderResponse> getFolders() throws Exception {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userId = auth.getName();
-
-        List<FolderDto> folders = this.folderService.getAllFolders(userId);
+    @PreAuthorize("hasRole('USER')")
+    public List<FolderResponse> getFolders(@CurrentUser UserPrincipal userPrincipal) throws Exception {
+        List<FolderDto> folders = this.folderService.getAllFolders(userPrincipal.getId());
         List<FolderResponse> response = new ArrayList<>();
 
         for (FolderDto folder : folders) {
@@ -48,19 +49,17 @@ public class FolderController {
         return response;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "", consumes = "application/json", produces = "application/json")
-    public FolderResponse createFolder(@Valid @RequestBody CreateFolderRequest createFolderRequest, Errors errors) throws Exception {
+    public FolderResponse createFolder(@Valid @RequestBody CreateFolderRequest createFolderRequest, Errors errors,
+                                       @CurrentUser UserPrincipal userPrincipal) throws Exception {
         if (errors.hasErrors()) {
             throw new BodyValidationException(errors);
         }
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         FolderDto folderDto = new FolderDto();
         BeanUtils.copyProperties(createFolderRequest, folderDto);
-
-        String userId = auth.getName();
-        folderDto.setUserId(userId);
-
+        folderDto.setUserId(userPrincipal.getId());
         FolderDto createdFolded = this.folderService.createFolder(folderDto);
 
         FolderResponse response = new FolderResponse();
@@ -70,19 +69,16 @@ public class FolderController {
     }
 
     @PutMapping(value = "", consumes = "application/json", produces = "application/json")
-    public FolderResponse updateFolder(@Valid @RequestBody UpdateFolderRequest updateFolderRequest, Errors errors) throws Exception {
+    @PreAuthorize("hasRole('USER')")
+    public FolderResponse updateFolder(@Valid @RequestBody UpdateFolderRequest updateFolderRequest, Errors errors,
+                                       @CurrentUser UserPrincipal userPrincipal) throws Exception {
         if (errors.hasErrors()) {
             throw new BodyValidationException(errors);
         }
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         FolderDto folderDto = new FolderDto();
         BeanUtils.copyProperties(updateFolderRequest, folderDto);
-
-        String userId = auth.getName();
-        folderDto.setUserId(userId);
-
+        folderDto.setUserId(userPrincipal.getId());
         FolderDto updatedFolder = this.folderService.updateFolder(folderDto);
 
         FolderResponse response = new FolderResponse();
@@ -92,25 +88,19 @@ public class FolderController {
     }
 
     @DeleteMapping(value = "", consumes = "application/json", produces = "application/json")
-    public void deleteFolder(@RequestParam("id") String folderId) throws Exception {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
+    @PreAuthorize("hasRole('USER')")
+    public void deleteFolder(@RequestParam("id") String folderId, @CurrentUser UserPrincipal userPrincipal) throws Exception {
         FolderDto folder = new FolderDto();
         folder.setId(folderId);
-
-        String userId = auth.getName();
-        folder.setUserId(userId);
-
+        folder.setUserId(userPrincipal.getId());
         this.folderService.deleteFolder(folder);
     }
 
     @GetMapping(value = "/with-notes", consumes = "application/json", produces = "application/json")
-    public List<GetFolderWithNotesResponse> getFoldersWithNotes() throws Exception {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userId = auth.getName();
-
+    @PreAuthorize("hasRole('USER')")
+    public List<GetFolderWithNotesResponse> getFoldersWithNotes(@CurrentUser UserPrincipal userPrincipal) throws Exception {
         List<GetFolderWithNotesResponse> foldersWithNotes = new ArrayList<>();
-        List<FolderDto> folders = this.folderService.getAllFolders(userId);
+        List<FolderDto> folders = this.folderService.getAllFolders(userPrincipal.getId());
 
         for (FolderDto folder : folders) {
             GetFolderWithNotesResponse item = new GetFolderWithNotesResponse();
@@ -118,7 +108,7 @@ public class FolderController {
 
             NoteDto noteDto = new NoteDto();
             noteDto.setFolderId(folder.getId());
-            noteDto.setUserId(userId);
+            noteDto.setUserId(userPrincipal.getId());
 
             List<NoteDto> notes = this.noteService.getNotesInFolder(noteDto);
 

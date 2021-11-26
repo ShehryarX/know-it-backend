@@ -1,8 +1,7 @@
 package io.knowit.backend.service.impl;
 
-import io.knowit.backend.io.entity.UserEntity;
+import io.knowit.backend.io.entity.User;
 import io.knowit.backend.io.repository.UserEntityRepository;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,10 +21,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String usernameId) throws UsernameNotFoundException {
-        Optional<UserEntity> userEntity = userEntityRepository.findById(usernameId);
+        Optional<User> userEntity = userEntityRepository.findById(usernameId);
         if (!userEntity.isPresent()) {
             throw new UsernameNotFoundException(usernameId);
         }
-        return new User(userEntity.get().getId(), userEntity.get().getPassword(), emptyList());
+        return new org.springframework.security.core.userdetails.User(userEntity.get().getId(), userEntity.get().getPassword(), emptyList());
     }
 }

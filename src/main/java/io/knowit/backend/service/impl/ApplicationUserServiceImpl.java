@@ -1,7 +1,7 @@
 package io.knowit.backend.service.impl;
 
 import io.knowit.backend.exception.UserAlreadyExistsException;
-import io.knowit.backend.io.entity.UserEntity;
+import io.knowit.backend.io.entity.User;
 import io.knowit.backend.io.repository.UserEntityRepository;
 import io.knowit.backend.service.ApplicationUserService;
 import io.knowit.backend.shared.dto.UserDto;
@@ -26,10 +26,10 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
     }
 
     @Override
-    public void signUpUser(UserEntity user) throws UserAlreadyExistsException {
+    public void signUpUser(User user) throws UserAlreadyExistsException {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
-        if (userEntityRepository.findByUsername(user.getUsername()) != null) {
+        if (userEntityRepository.findByEmail(user.getEmail()) != null) {
             throw new UserAlreadyExistsException("Username already exists.");
         }
 
@@ -38,7 +38,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService {
 
     @Override
     public UserDto getUserDetails(UserDto userDto) throws Exception {
-        Optional<UserEntity> user = userEntityRepository.findById(userDto.getId());
+        Optional<User> user = userEntityRepository.findById(userDto.getId());
 
         if (!user.isPresent()) {
             throw new Exception("User ID not found.");

@@ -4,11 +4,12 @@ import io.knowit.backend.exception.BodyValidationException;
 import io.knowit.backend.proto.request.CreateNoteRequest;
 import io.knowit.backend.proto.request.UpdateNoteRequest;
 import io.knowit.backend.proto.response.NoteResponse;
+import io.knowit.backend.security.CurrentUser;
+import io.knowit.backend.security.UserPrincipal;
 import io.knowit.backend.service.NoteService;
 import io.knowit.backend.shared.dto.NoteDto;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,18 +25,14 @@ public class NoteController {
         this.noteService = noteService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(value = "", consumes = "application/json", produces = "application/json")
-    public NoteResponse getNote(@RequestParam("id") String noteId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
+    public NoteResponse getNote(@RequestParam("id") String noteId, @CurrentUser UserPrincipal userPrincipal) {
         NoteDto noteDto = new NoteDto();
         noteDto.setId(noteId);
-
-        String userId = auth.getName();
-        noteDto.setUserId(userId);
+        noteDto.setUserId(userPrincipal.getId());
 
         NoteDto note = this.noteService.getNote(noteDto);
-
         NoteResponse response = new NoteResponse();
         BeanUtils.copyProperties(note, response);
 
@@ -43,19 +40,16 @@ public class NoteController {
     }
 
     @PostMapping(value = "", consumes = "application/json", produces = "application/json")
-    public NoteResponse createNote(@Valid @RequestBody CreateNoteRequest noteRequest, Errors errors) throws BodyValidationException {
+    @PreAuthorize("hasRole('USER')")
+    public NoteResponse createNote(@Valid @RequestBody CreateNoteRequest noteRequest, Errors errors,
+                                   @CurrentUser UserPrincipal userPrincipal) throws BodyValidationException {
         if (errors.hasErrors()) {
             throw new BodyValidationException(errors);
         }
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         NoteDto noteDto = new NoteDto();
         BeanUtils.copyProperties(noteRequest, noteDto);
-
-        String userId = auth.getName();
-        noteDto.setUserId(userId);
-
+        noteDto.setUserId(userPrincipal.getId());
         NoteDto note = this.noteService.createNote(noteDto);
 
         NoteResponse response = new NoteResponse();
@@ -65,18 +59,16 @@ public class NoteController {
     }
 
     @PutMapping(value = "", consumes = "application/json", produces = "application/json")
-    public NoteResponse updateNote(@Valid @RequestBody UpdateNoteRequest updatedNote, Errors errors) throws BodyValidationException {
+    @PreAuthorize("hasRole('USER')")
+    public NoteResponse updateNote(@Valid @RequestBody UpdateNoteRequest updatedNote, Errors errors,
+                                   @CurrentUser UserPrincipal userPrincipal) throws BodyValidationException {
         if (errors.hasErrors()) {
             throw new BodyValidationException(errors);
         }
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         NoteDto noteDto = new NoteDto();
         BeanUtils.copyProperties(updatedNote, noteDto);
-        String userId = auth.getName();
-        noteDto.setUserId(userId);
-
+        noteDto.setUserId(userPrincipal.getId());
         NoteDto newNote = this.noteService.updateNote(noteDto);
 
         NoteResponse note = new NoteResponse();
@@ -88,15 +80,11 @@ public class NoteController {
     }
 
     @DeleteMapping(value = "", consumes = "application/json", produces = "application/json")
-    public void deleteNote(@RequestParam("id") String noteId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
+    @PreAuthorize("hasRole('USER')")
+    public void deleteNote(@RequestParam("id") String noteId, @CurrentUser UserPrincipal userPrincipal) {
         NoteDto noteDto = new NoteDto();
         noteDto.setId(noteId);
-
-        String userId = auth.getName();
-        noteDto.setUserId(userId);
-
+        noteDto.setUserId(userPrincipal.getId());
         this.noteService.deleteNote(noteDto);
     }
 }

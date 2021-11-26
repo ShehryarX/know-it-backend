@@ -10,22 +10,17 @@ public class SignUpUserRequest {
     @Email(message = "Please enter a valid email.")
     private String email;
 
-    @NotNull(message = "Please enter your first name.")
-    @Size(min = 1, max = 50, message = "Please enter your first name.")
-    private String firstName;
-
-    @NotNull(message = "Please enter your last name.")
-    @Size(min = 1, max = 50, message = "Please enter your last name.")
-    private String lastName;
+    @NotNull(message = "Please enter your name.")
+    @Size(min = 1, max = 50, message = "Please enter your name.")
+    private String name;
 
     @NotNull(message = "Please enter a password.")
     @Size(min = 6, max = 100, message = "Make sure your password is more than 6 characters.")
     private String password;
 
-    public SignUpUserRequest(String email, String firstName, String lastName, String password) {
+    public SignUpUserRequest(@NotNull(message = "Please enter a valid email.") @Size(min = 5, max = 100, message = "Please enter a valid email.") @Email(message = "Please enter a valid email.") String email, @NotNull(message = "Please enter your name.") @Size(min = 1, max = 50, message = "Please enter your name.") String name, @NotNull(message = "Please enter a password.") @Size(min = 6, max = 100, message = "Make sure your password is more than 6 characters.") String password) {
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
         this.password = password;
     }
 
@@ -37,20 +32,12 @@ public class SignUpUserRequest {
         this.email = email;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
