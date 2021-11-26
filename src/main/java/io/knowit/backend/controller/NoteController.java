@@ -82,9 +82,7 @@ public class NoteController {
         NoteResponse note = new NoteResponse();
         BeanUtils.copyProperties(newNote, note);
 
-        // TODO: Create different endpoint for updating title and different endpoint
-        // for updating note
-        newNote.setContents(null);
+        // TODO: Create different endpoint for updating title and different endpoint for updating note
 
         return note;
     }
