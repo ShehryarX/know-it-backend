@@ -19,7 +19,7 @@ public class SignUpUserRequest {
     private String lastName;
 
     @NotNull(message = "Please enter a password.")
-    @Size(min = 6, max = 100, message = "Make sure your password is more tha 6 characters.")
+    @Size(min = 6, max = 100, message = "Make sure your password is more than 6 characters.")
     private String password;
 
     public SignUpUserRequest(String email, String firstName, String lastName, String password) {

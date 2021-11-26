@@ -8,12 +8,7 @@ public class UpdateNoteRequest {
     @Size(min = 1, message = "Please specify a note ID.")
     private String id;
 
-    @NotNull(message = "Please enter a title.")
-    @Size(min = 1, max = 150, message = "Please enter a title.")
     private String title;
-
-    @NotNull(message = "Please specify the note contents.")
-    @Size(min = 1, message = "Please specify the note contents.")
     private String contents;
 
     public UpdateNoteRequest(String id, String title, String contents) {
