@@ -4,12 +4,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class CreateNoteRequest {
-    @NotNull
-    @Size(min = 1)
+    @NotNull(message = "Please specify a title.")
+    @Size(min = 1, max = 150, message = "Please specify a title.")
     private String title;
 
-    @NotNull
-    @Size(min = 1)
+    @NotNull(message = "Please specify a folder ID.")
+    @Size(min = 1, message = "Please specify a folder ID.")
     private String folderId;
 
     public CreateNoteRequest(String title, String folderId) {

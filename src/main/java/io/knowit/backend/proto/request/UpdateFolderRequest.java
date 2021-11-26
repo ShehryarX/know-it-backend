@@ -4,15 +4,16 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class UpdateFolderRequest {
-    @NotNull
-    @Size(min = 1)
+    @NotNull(message = "Please specify a folder ID.")
+    @Size(min = 1, message = "Please specify a folder ID.")
     private String id;
 
-    @NotNull
-    @Size(min = 1)
+    @NotNull(message = "Please enter a title.")
+    @Size(min = 1, max = 150, message = "Please enter a title.")
     private String title;
 
-    @NotNull
+    @NotNull(message = "Please select a colour.")
+    @Size(min = 1, max = 100, message = "Please select a colour.")
     private String colour;
 
     public UpdateFolderRequest(@NotNull @Size(min = 1) String id, @NotNull @Size(min = 1) String title, @NotNull String colour) {

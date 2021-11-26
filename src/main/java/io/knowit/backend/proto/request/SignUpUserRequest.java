@@ -1,23 +1,25 @@
 package io.knowit.backend.proto.request;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class SignUpUserRequest {
-    @NotNull
-    @Size(min = 5, max = 100)
+    @NotNull(message = "Please enter a valid email.")
+    @Size(min = 5, max = 100, message = "Please enter a valid email.")
+    @Email(message = "Please enter a valid email.")
     private String email;
 
-    @NotNull
-    @Size(min = 1, max = 50)
+    @NotNull(message = "Please enter your first name.")
+    @Size(min = 1, max = 50, message = "Please enter your first name.")
     private String firstName;
 
-    @NotNull
-    @Size(min = 1, max = 50)
+    @NotNull(message = "Please enter your last name.")
+    @Size(min = 1, max = 50, message = "Please enter your last name.")
     private String lastName;
 
-    @NotNull
-    @Size(min = 6, max = 100)
+    @NotNull(message = "Please enter a password.")
+    @Size(min = 6, max = 100, message = "Make sure your password is more tha 6 characters.")
     private String password;
 
     public SignUpUserRequest(String email, String firstName, String lastName, String password) {

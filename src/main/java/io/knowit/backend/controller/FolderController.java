@@ -1,5 +1,6 @@
 package io.knowit.backend.controller;
 
+import io.knowit.backend.exception.BodyValidationException;
 import io.knowit.backend.proto.request.CreateFolderRequest;
 import io.knowit.backend.proto.request.UpdateFolderRequest;
 import io.knowit.backend.proto.response.FolderResponse;
@@ -12,6 +13,7 @@ import io.knowit.backend.shared.dto.NoteDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -47,7 +49,10 @@ public class FolderController {
     }
 
     @PostMapping(value = "", consumes = "application/json", produces = "application/json")
-    public FolderResponse createFolder(@Valid @RequestBody CreateFolderRequest createFolderRequest) throws Exception {
+    public FolderResponse createFolder(@Valid @RequestBody CreateFolderRequest createFolderRequest, Errors errors) throws Exception {
+        if (errors.hasErrors()) {
+            throw new BodyValidationException(errors);
+        }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         FolderDto folderDto = new FolderDto();
@@ -65,7 +70,11 @@ public class FolderController {
     }
 
     @PutMapping(value = "", consumes = "application/json", produces = "application/json")
-    public FolderResponse updateFolder(@Valid @RequestBody UpdateFolderRequest updateFolderRequest) throws Exception {
+    public FolderResponse updateFolder(@Valid @RequestBody UpdateFolderRequest updateFolderRequest, Errors errors) throws Exception {
+        if (errors.hasErrors()) {
+            throw new BodyValidationException(errors);
+        }
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         FolderDto folderDto = new FolderDto();

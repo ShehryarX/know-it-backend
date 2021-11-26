@@ -4,16 +4,16 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class UpdateNoteRequest {
-    @NotNull
-    @Size(min = 1)
+    @NotNull(message = "Please specify a note ID.")
+    @Size(min = 1, message = "Please specify a note ID.")
     private String id;
 
-    @NotNull
-    @Size(min = 1)
+    @NotNull(message = "Please enter a title.")
+    @Size(min = 1, max = 150, message = "Please enter a title.")
     private String title;
 
-    @NotNull
-    @Size(min = 1)
+    @NotNull(message = "Please specify the note contents.")
+    @Size(min = 1, message = "Please specify the note contents.")
     private String contents;
 
     public UpdateNoteRequest(String id, String title, String contents) {

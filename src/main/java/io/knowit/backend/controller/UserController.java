@@ -1,5 +1,6 @@
 package io.knowit.backend.controller;
 
+import io.knowit.backend.exception.BodyValidationException;
 import io.knowit.backend.proto.request.SignUpUserRequest;
 import io.knowit.backend.io.entity.UserEntity;
 import io.knowit.backend.proto.response.GetUserDetailsResponse;
@@ -8,6 +9,7 @@ import io.knowit.backend.shared.dto.UserDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,7 +24,11 @@ public class UserController {
     }
 
     @PostMapping(value = "/sign-up", consumes = "application/json", produces = "application/json")
-    public void signUp(@Valid @RequestBody SignUpUserRequest user) throws Exception {
+    public void signUp(@Valid @RequestBody SignUpUserRequest user, Errors errors) throws Exception {
+        if (errors.hasErrors()) {
+            throw new BodyValidationException(errors);
+        }
+
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(user, userEntity);
         userEntity.setUsername(user.getEmail());

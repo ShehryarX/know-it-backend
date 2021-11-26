@@ -1,5 +1,6 @@
 package io.knowit.backend.controller;
 
+import io.knowit.backend.exception.BodyValidationException;
 import io.knowit.backend.proto.request.CreateNoteRequest;
 import io.knowit.backend.proto.request.UpdateNoteRequest;
 import io.knowit.backend.proto.response.NoteResponse;
@@ -8,6 +9,7 @@ import io.knowit.backend.shared.dto.NoteDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,7 +43,11 @@ public class NoteController {
     }
 
     @PostMapping(value = "", consumes = "application/json", produces = "application/json")
-    public NoteResponse createNote(@Valid @RequestBody CreateNoteRequest noteRequest) {
+    public NoteResponse createNote(@Valid @RequestBody CreateNoteRequest noteRequest, Errors errors) throws BodyValidationException {
+        if (errors.hasErrors()) {
+            throw new BodyValidationException(errors);
+        }
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         NoteDto noteDto = new NoteDto();
@@ -59,7 +65,11 @@ public class NoteController {
     }
 
     @PutMapping(value = "", consumes = "application/json", produces = "application/json")
-    public NoteResponse updateNote(@Valid @RequestBody UpdateNoteRequest updatedNote) {
+    public NoteResponse updateNote(@Valid @RequestBody UpdateNoteRequest updatedNote, Errors errors) throws BodyValidationException {
+        if (errors.hasErrors()) {
+            throw new BodyValidationException(errors);
+        }
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         NoteDto noteDto = new NoteDto();
@@ -76,7 +86,7 @@ public class NoteController {
     }
 
     @DeleteMapping(value = "", consumes = "application/json", produces = "application/json")
-    public void deleteNote(@RequestParam("id") String noteId){
+    public void deleteNote(@RequestParam("id") String noteId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         NoteDto noteDto = new NoteDto();
