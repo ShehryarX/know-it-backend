@@ -1,27 +1,32 @@
 package io.knowit.backend.service.impl;
 
+import io.knowit.backend.io.entity.Folder;
 import io.knowit.backend.io.entity.Note;
+import io.knowit.backend.io.repository.FolderRepository;
 import io.knowit.backend.io.repository.NoteRepository;
 import io.knowit.backend.service.NoteService;
 import io.knowit.backend.shared.dto.NoteDto;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NoteServiceImpl implements NoteService {
+
+    @Autowired
     private NoteRepository noteRepository;
 
-    public NoteServiceImpl(NoteRepository noteRepository) {
-        this.noteRepository = noteRepository;
-    }
+    @Autowired
+    private FolderRepository folderRepository;
 
     @Override
     public NoteDto updateNote(NoteDto noteDto) {
-        Note note = this.noteRepository.findByIdAndUserId(noteDto.getId(), noteDto.getUserId());
+        Note note = this.noteRepository.findByIdAndUserIdAndInTrash(noteDto.getId(), noteDto.getUserId(), false);
 
         note.setTitle(noteDto.getTitle());
         note.setContents(noteDto.getContents());
@@ -47,14 +52,15 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public NoteDto getNote(NoteDto noteDto) {
-        Note note = this.noteRepository.findByIdAndUserId(noteDto.getId(), noteDto.getUserId());
+        Note note = this.noteRepository.findByIdAndUserIdAndInTrash(noteDto.getId(), noteDto.getUserId(), false);
         BeanUtils.copyProperties(note, noteDto);
         return noteDto;
     }
 
     @Override
     public List<NoteDto> getNotesInFolder(NoteDto noteDto) {
-        List<Note> notes = this.noteRepository.findAllByFolderIdAndUserId(noteDto.getFolderId(), noteDto.getUserId());
+        List<Note> notes = this.noteRepository.findAllByFolderIdAndUserIdAndInTrash(noteDto.getFolderId(), noteDto.getUserId(),
+                false);
         List<NoteDto> noteDtos = new ArrayList<>();
 
         for (Note note : notes) {
@@ -67,7 +73,48 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    public List<NoteDto> getNotesInTrash() {
+        List<Note> notes = this.noteRepository.findAllByInTrash(true);
+        List<NoteDto> noteDtos = new ArrayList<>();
+
+        for (Note note : notes) {
+            NoteDto noteDto = new NoteDto();
+            BeanUtils.copyProperties(note, noteDto);
+            noteDtos.add(noteDto);
+        }
+
+        return noteDtos;
+    }
+
+    @Override
     public void deleteNote(NoteDto noteDto) {
-        this.noteRepository.deleteNoteByIdAndUserId(noteDto.getId(), noteDto.getUserId());
+        Note note = this.noteRepository.findByIdAndUserIdAndInTrash(noteDto.getId(), noteDto.getUserId(), false);
+        note.setInTrash(true);
+        this.noteRepository.save(note);
+    }
+
+    @Override
+    public NoteDto recoverNote(NoteDto noteDto) {
+        Note note = this.noteRepository.findByIdAndUserIdAndInTrash(noteDto.getId(), noteDto.getUserId(), true);
+        note.setInTrash(false);
+        this.noteRepository.save(note);
+
+        Optional<Folder> folder = this.folderRepository.findByIdAndUserIdAndInTrash(noteDto.getId(), noteDto.getUserId(), true);
+
+        if (folder.isPresent()) {
+            folder.get().setInTrash(false);
+            this.folderRepository.save(folder.get());
+        }
+
+        BeanUtils.copyProperties(note, noteDto);
+        return noteDto;
+    }
+
+    @Override
+    public NoteDto updateNoteTitle(NoteDto noteDto) {
+        Note note = this.noteRepository.findByIdAndUserIdAndInTrash(noteDto.getId(), noteDto.getUserId(), false);
+        note.setTitle(noteDto.getTitle());
+        this.noteRepository.save(note);
+        return noteDto;
     }
 }

@@ -21,13 +21,18 @@ public class Folder {
     @Size(min = 1)
     private String userId;
 
+    @NonNull
+    private Boolean isInTrash = false;
+
     public Folder() {
     }
 
-    public Folder(@NonNull @Size(min = 1) String title, @NonNull @Size(min = 1) String colour, @NonNull @Size(min = 1) String userId) {
+    public Folder(String id, @NonNull @Size(min = 1) String title, @NonNull @Size(min = 1) String colour, @NonNull @Size(min = 1) String userId, @NonNull Boolean isInTrash) {
+        this.id = id;
         this.title = title;
         this.colour = colour;
         this.userId = userId;
+        this.isInTrash = isInTrash;
     }
 
     public String getId() {
@@ -63,5 +68,14 @@ public class Folder {
 
     public void setUserId(@NonNull String userId) {
         this.userId = userId;
+    }
+
+    @NonNull
+    public Boolean getInTrash() {
+        return isInTrash;
+    }
+
+    public void setInTrash(@NonNull Boolean inTrash) {
+        isInTrash = inTrash;
     }
 }

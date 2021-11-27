@@ -30,15 +30,20 @@ public class Note {
     @Size(min = 1)
     private String userId;
 
+    @NonNull
+    private Boolean isInTrash = false;
+
     public Note() {
     }
 
-    public Note(@NonNull String title, @NonNull String contents, Date timeUpdated, @NonNull @Size(min = 1) String folderId, @NonNull @Size(min = 1) String userId) {
+    public Note(String id, @NonNull @Size(min = 1) String title, @NonNull @Size(min = 1) String contents, Date timeUpdated, @NonNull @Size(min = 1) String folderId, @NonNull @Size(min = 1) String userId, @NonNull Boolean isInTrash) {
+        this.id = id;
         this.title = title;
         this.contents = contents;
         this.timeUpdated = timeUpdated;
         this.folderId = folderId;
         this.userId = userId;
+        this.isInTrash = isInTrash;
     }
 
     public String getId() {
@@ -91,5 +96,14 @@ public class Note {
 
     public void setUserId(@NonNull String userId) {
         this.userId = userId;
+    }
+
+    @NonNull
+    public Boolean getInTrash() {
+        return isInTrash;
+    }
+
+    public void setInTrash(@NonNull Boolean inTrash) {
+        isInTrash = inTrash;
     }
 }

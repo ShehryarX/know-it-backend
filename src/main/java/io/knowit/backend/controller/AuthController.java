@@ -8,7 +8,6 @@ import io.knowit.backend.io.repository.UserEntityRepository;
 import io.knowit.backend.proto.request.LoginRequest;
 import io.knowit.backend.proto.request.SignUpUserRequest;
 import io.knowit.backend.proto.response.ApiResponse;
-import io.knowit.backend.proto.response.AuthResponse;
 import io.knowit.backend.proto.response.GetUserDetailsResponse;
 import io.knowit.backend.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;

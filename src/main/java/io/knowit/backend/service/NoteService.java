@@ -7,7 +7,10 @@ import java.util.List;
 public interface NoteService {
     NoteDto getNote(NoteDto note);
     List<NoteDto> getNotesInFolder(NoteDto note);
+    List<NoteDto> getNotesInTrash();
     NoteDto createNote(NoteDto newNote);
     NoteDto updateNote(NoteDto updatedNote);
     void deleteNote(NoteDto note);
+    NoteDto recoverNote(NoteDto note);
+    NoteDto updateNoteTitle(NoteDto noteDto);
 }
