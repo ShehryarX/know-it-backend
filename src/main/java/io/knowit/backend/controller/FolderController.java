@@ -13,9 +13,8 @@ import io.knowit.backend.service.NoteService;
 import io.knowit.backend.shared.dto.FolderDto;
 import io.knowit.backend.shared.dto.NoteDto;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,13 +25,12 @@ import java.util.List;
 @RestController
 @RequestMapping("folders")
 public class FolderController {
-    private FolderService folderService;
-    private NoteService noteService;
 
-    public FolderController(FolderService folderService, NoteService noteService) {
-        this.folderService = folderService;
-        this.noteService = noteService;
-    }
+    @Autowired
+    private FolderService folderService;
+
+    @Autowired
+    private NoteService noteService;
 
     @GetMapping(value = "", consumes = "application/json", produces = "application/json")
     @PreAuthorize("hasRole('USER')")
