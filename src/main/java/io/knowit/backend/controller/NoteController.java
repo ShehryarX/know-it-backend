@@ -57,7 +57,7 @@ public class NoteController {
         return response;
     }
 
-    @DeleteMapping(value = "/recover-note", consumes = "application/json", produces = "application/json")
+    @GetMapping(value = "/recover-note", consumes = "application/json", produces = "application/json")
     @PreAuthorize("hasRole('USER')")
     public NoteResponse recoverNote(@RequestParam("id") String noteId, @CurrentUser UserPrincipal userPrincipal) {
         NoteDto noteDto = new NoteDto();
