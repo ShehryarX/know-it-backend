@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface FolderRepository extends MongoRepository<Folder, String> {
-    List<Folder> findAllByUserIdAndInTrash(String id, Boolean isInTrash);
-    Optional<Folder> findByIdAndUserIdAndInTrash(String id, String userId, Boolean isInTrash);
+    List<Folder> findAllByUserIdAndIsInTrash(String id, Boolean isInTrash);
+    Optional<Folder> findByIdAndUserIdAndIsInTrash(String id, String userId, Boolean isInTrash);
 }

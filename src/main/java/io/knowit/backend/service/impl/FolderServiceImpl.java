@@ -33,7 +33,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void deleteFolder(FolderDto folderDto) {
-        List<Note> notes = this.noteRepository.findAllByFolderIdAndUserIdAndInTrash(folderDto.getId(), folderDto.getUserId(), false);
+        List<Note> notes = this.noteRepository.findAllByFolderIdAndUserIdAndIsInTrash(folderDto.getId(), folderDto.getUserId(), false);
 
         for (Note note : notes) {
             note.setInTrash(true);
@@ -47,7 +47,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public FolderDto updateFolder(FolderDto folderDto) {
-        Folder folder = folderRepository.findByIdAndUserIdAndInTrash(folderDto.getId(), folderDto.getUserId(), false).get();
+        Folder folder = folderRepository.findByIdAndUserIdAndIsInTrash(folderDto.getId(), folderDto.getUserId(), false).get();
         folder.setTitle(folderDto.getTitle());
         folder.setColour(folderDto.getColour());
         folderRepository.save(folder);
@@ -57,7 +57,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public List<FolderDto> getAllFolders(String userId) {
-        List<Folder> folders = folderRepository.findAllByUserIdAndInTrash(userId, false);
+        List<Folder> folders = folderRepository.findAllByUserIdAndIsInTrash(userId, false);
         List<FolderDto> foldersDtos = new ArrayList<>();
 
         for (Folder folder : folders) {

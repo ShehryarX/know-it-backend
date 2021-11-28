@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface NoteRepository extends MongoRepository<Note, String> {
-    Note findByIdAndUserIdAndInTrash(String id, String userId, Boolean inTrash);
-    List<Note> findAllByFolderIdAndUserIdAndInTrash(String folderId, String userId, Boolean inTrash);
-    List<Note> findAllByInTrash(Boolean inTrash);
+    Note findByIdAndUserIdAndIsInTrash(String id, String userId, Boolean inTrash);
+    List<Note> findAllByFolderIdAndUserIdAndIsInTrash(String folderId, String userId, Boolean inTrash);
+    List<Note> findAllByIsInTrash(Boolean inTrash);
 }

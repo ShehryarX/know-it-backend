@@ -26,7 +26,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public NoteDto updateNote(NoteDto noteDto) {
-        Note note = this.noteRepository.findByIdAndUserIdAndInTrash(noteDto.getId(), noteDto.getUserId(), false);
+        Note note = this.noteRepository.findByIdAndUserIdAndIsInTrash(noteDto.getId(), noteDto.getUserId(), false);
 
         note.setTitle(noteDto.getTitle());
         note.setContents(noteDto.getContents());
@@ -52,14 +52,14 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public NoteDto getNote(NoteDto noteDto) {
-        Note note = this.noteRepository.findByIdAndUserIdAndInTrash(noteDto.getId(), noteDto.getUserId(), false);
+        Note note = this.noteRepository.findByIdAndUserIdAndIsInTrash(noteDto.getId(), noteDto.getUserId(), false);
         BeanUtils.copyProperties(note, noteDto);
         return noteDto;
     }
 
     @Override
     public List<NoteDto> getNotesInFolder(NoteDto noteDto) {
-        List<Note> notes = this.noteRepository.findAllByFolderIdAndUserIdAndInTrash(noteDto.getFolderId(), noteDto.getUserId(),
+        List<Note> notes = this.noteRepository.findAllByFolderIdAndUserIdAndIsInTrash(noteDto.getFolderId(), noteDto.getUserId(),
                 false);
         List<NoteDto> noteDtos = new ArrayList<>();
 
@@ -74,7 +74,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public List<NoteDto> getNotesInTrash() {
-        List<Note> notes = this.noteRepository.findAllByInTrash(true);
+        List<Note> notes = this.noteRepository.findAllByIsInTrash(true);
         List<NoteDto> noteDtos = new ArrayList<>();
 
         for (Note note : notes) {
@@ -88,18 +88,18 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public void deleteNote(NoteDto noteDto) {
-        Note note = this.noteRepository.findByIdAndUserIdAndInTrash(noteDto.getId(), noteDto.getUserId(), false);
+        Note note = this.noteRepository.findByIdAndUserIdAndIsInTrash(noteDto.getId(), noteDto.getUserId(), false);
         note.setInTrash(true);
         this.noteRepository.save(note);
     }
 
     @Override
     public NoteDto recoverNote(NoteDto noteDto) {
-        Note note = this.noteRepository.findByIdAndUserIdAndInTrash(noteDto.getId(), noteDto.getUserId(), true);
+        Note note = this.noteRepository.findByIdAndUserIdAndIsInTrash(noteDto.getId(), noteDto.getUserId(), true);
         note.setInTrash(false);
         this.noteRepository.save(note);
 
-        Optional<Folder> folder = this.folderRepository.findByIdAndUserIdAndInTrash(noteDto.getId(), noteDto.getUserId(), true);
+        Optional<Folder> folder = this.folderRepository.findByIdAndUserIdAndIsInTrash(noteDto.getId(), noteDto.getUserId(), true);
 
         if (folder.isPresent()) {
             folder.get().setInTrash(false);
@@ -112,7 +112,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public NoteDto updateNoteTitle(NoteDto noteDto) {
-        Note note = this.noteRepository.findByIdAndUserIdAndInTrash(noteDto.getId(), noteDto.getUserId(), false);
+        Note note = this.noteRepository.findByIdAndUserIdAndIsInTrash(noteDto.getId(), noteDto.getUserId(), false);
         note.setTitle(noteDto.getTitle());
         this.noteRepository.save(note);
         return noteDto;
