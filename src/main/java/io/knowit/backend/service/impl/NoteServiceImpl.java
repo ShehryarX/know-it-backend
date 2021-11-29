@@ -111,8 +111,9 @@ public class NoteServiceImpl implements NoteService {
         Optional<Folder> folder = this.folderRepository.findByIdAndUserIdAndIsInTrash(noteDto.getId(), noteDto.getUserId(), true);
 
         if (folder.isPresent()) {
-            folder.get().setInTrash(false);
-            this.folderRepository.save(folder.get());
+            Folder found = folder.get();
+            found.setInTrash(false);
+            this.folderRepository.save(found);
         }
 
         BeanUtils.copyProperties(note, noteDto);
