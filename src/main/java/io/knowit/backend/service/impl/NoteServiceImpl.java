@@ -28,9 +28,18 @@ public class NoteServiceImpl implements NoteService {
     public NoteDto updateNote(NoteDto noteDto) {
         Note note = this.noteRepository.findByIdAndUserIdAndIsInTrash(noteDto.getId(), noteDto.getUserId(), false);
 
-        note.setTitle(noteDto.getTitle());
-        note.setContents(noteDto.getContents());
-        note.setTimeUpdated(new Date());
+        if (noteDto.getTitle() != null) {
+            note.setTitle(noteDto.getTitle());
+        }
+
+        if (noteDto.getContents() != null) {
+            note.setContents(noteDto.getContents());
+        }
+
+        if (noteDto.getTimeUpdated() != null) {
+            note.setTimeUpdated(new Date());
+        }
+
         this.noteRepository.save(note);
         BeanUtils.copyProperties(note, noteDto);
 
