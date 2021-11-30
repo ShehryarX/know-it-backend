@@ -44,8 +44,9 @@ public class NoteController {
 
     @GetMapping(value = "/in-trash", consumes = "application/json", produces = "application/json")
     @PreAuthorize("hasRole('USER')")
-    public List<BriefNoteDescriptionResponse> getNotesInTrash() {
-        List<NoteDto> notesInTrash = this.noteService.getNotesInTrash();
+    public List<BriefNoteDescriptionResponse> getNotesInTrash(NoteDto request, @CurrentUser UserPrincipal userPrincipal) {
+        request.setUserId(userPrincipal.getId());
+        List<NoteDto> notesInTrash = this.noteService.getNotesInTrash(request);
         List<BriefNoteDescriptionResponse> response = new ArrayList<>();
 
         for (NoteDto noteDto : notesInTrash) {

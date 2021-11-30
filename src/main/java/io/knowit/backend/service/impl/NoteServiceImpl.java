@@ -82,14 +82,14 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public List<NoteDto> getNotesInTrash() {
-        List<Note> notes = this.noteRepository.findAllByIsInTrash(true);
+    public List<NoteDto> getNotesInTrash(NoteDto noteDto) {
+        List<Note> notes = this.noteRepository.findAllByIsInTrashAndUserId(true, noteDto.getUserId());
         List<NoteDto> noteDtos = new ArrayList<>();
 
         for (Note note : notes) {
-            NoteDto noteDto = new NoteDto();
-            BeanUtils.copyProperties(note, noteDto);
-            noteDtos.add(noteDto);
+            NoteDto dto = new NoteDto();
+            BeanUtils.copyProperties(note, dto);
+            noteDtos.add(dto);
         }
 
         return noteDtos;

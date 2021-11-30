@@ -10,5 +10,5 @@ import java.util.List;
 public interface NoteRepository extends MongoRepository<Note, String> {
     Note findByIdAndUserIdAndIsInTrash(String id, String userId, Boolean inTrash);
     List<Note> findAllByFolderIdAndUserIdAndIsInTrash(String folderId, String userId, Boolean inTrash);
-    List<Note> findAllByIsInTrash(Boolean inTrash);
+    List<Note> findAllByIsInTrashAndUserId(Boolean inTrash, String userId);
 }
