@@ -7,25 +7,25 @@ public class BriefNoteDescriptionResponse {
     private String title;
     private Date timeUpdated;
     private String folderId;
-    private String folderName;
+    private String folderTitle;
 
     public BriefNoteDescriptionResponse() {
     }
 
-    public BriefNoteDescriptionResponse(String id, String title, Date timeUpdated, String folderId, String folderName) {
+    public BriefNoteDescriptionResponse(String id, String title, Date timeUpdated, String folderId, String folderTitle) {
         this.id = id;
         this.title = title;
         this.timeUpdated = timeUpdated;
         this.folderId = folderId;
-        this.folderName = folderName;
+        this.folderTitle = folderTitle;
     }
 
-    public String getFolderName() {
-        return folderName;
+    public String getFolderTitle() {
+        return folderTitle;
     }
 
-    public void setFolderName(String folderName) {
-        this.folderName = folderName;
+    public void setFolderTitle(String folderTitle) {
+        this.folderTitle = folderTitle;
     }
 
     public String getId() {

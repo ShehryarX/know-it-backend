@@ -7,19 +7,19 @@ public class NoteDto {
     private String title;
     private String contents;
     private Date timeUpdated;
-    private String folderName;
+    private String folderTitle;
     private String folderId;
     private String userId;
 
     public NoteDto() {
     }
 
-    public String getFolderName() {
-        return folderName;
+    public String getFolderTitle() {
+        return folderTitle;
     }
 
-    public void setFolderName(String folderName) {
-        this.folderName = folderName;
+    public void setFolderTitle(String folderTitle) {
+        this.folderTitle = folderTitle;
     }
 
     public NoteDto(String id, String title, String contents, Date timeUpdated, String folderId, String userId) {

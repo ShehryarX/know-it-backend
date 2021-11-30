@@ -90,7 +90,7 @@ public class NoteServiceImpl implements NoteService {
             NoteDto dto = new NoteDto();
             BeanUtils.copyProperties(note, dto);
             Folder folder = this.folderRepository.findById(note.getFolderId()).get();
-            noteDto.setFolderName(folder.getTitle());
+            noteDto.setFolderTitle(folder.getTitle());
             noteDtos.add(dto);
         }
 
