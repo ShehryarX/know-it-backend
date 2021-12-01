@@ -58,6 +58,14 @@ public class NoteController {
         return response;
     }
 
+    @DeleteMapping(value = "/trash", consumes = "application/json", produces = "application/json")
+    @PreAuthorize("hasRole('USER')")
+    public void emptyTrash(@CurrentUser UserPrincipal userPrincipal) {
+        NoteDto noteDto = new NoteDto();
+        noteDto.setUserId(userPrincipal.getId());
+        this.noteService.deleteAllNotesInTrash(noteDto);
+    }
+
     @GetMapping(value = "/recover-note", consumes = "application/json", produces = "application/json")
     @PreAuthorize("hasRole('USER')")
     public NoteResponse recoverNote(@RequestParam("id") String noteId, @CurrentUser UserPrincipal userPrincipal) {

@@ -13,4 +13,5 @@ public interface NoteService {
     void deleteNote(NoteDto note);
     NoteDto recoverNote(NoteDto note);
     NoteDto updateNoteTitle(NoteDto noteDto);
+    void deleteAllNotesInTrash(NoteDto noteDto);
 }

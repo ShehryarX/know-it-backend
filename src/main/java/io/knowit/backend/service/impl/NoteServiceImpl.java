@@ -129,4 +129,9 @@ public class NoteServiceImpl implements NoteService {
         this.noteRepository.save(note);
         return noteDto;
     }
+
+    @Override
+    public void deleteAllNotesInTrash(NoteDto noteDto) {
+        this.noteRepository.deleteAllByIsInTrashAndUserId(true, noteDto.getUserId());
+    }
 }
