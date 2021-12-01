@@ -61,6 +61,7 @@ public class NoteController {
     @DeleteMapping(value = "/trash", consumes = "application/json", produces = "application/json")
     @PreAuthorize("hasRole('USER')")
     public void emptyTrash(@CurrentUser UserPrincipal userPrincipal) {
+        // TODO: Delete associated folders to make sure DB isn't clogged
         NoteDto noteDto = new NoteDto();
         noteDto.setUserId(userPrincipal.getId());
         this.noteService.deleteAllNotesInTrash(noteDto);
