@@ -5,17 +5,15 @@ public class FlashcardResponse {
     private String question;
     private String answer;
     private String noteId;
-    private String userId;
 
     public FlashcardResponse() {
     }
 
-    public FlashcardResponse(String id, String question, String answer, String noteId, String userId) {
+    public FlashcardResponse(String id, String question, String answer, String noteId) {
         this.id = id;
         this.question = question;
         this.answer = answer;
         this.noteId = noteId;
-        this.userId = userId;
     }
 
     public String getId() {
@@ -48,13 +46,5 @@ public class FlashcardResponse {
 
     public void setNoteId(String noteId) {
         this.noteId = noteId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 }
