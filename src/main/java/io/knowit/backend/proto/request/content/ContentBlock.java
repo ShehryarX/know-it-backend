@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 })
 public class ContentBlock {
     private String type;
+    private String id;
 
     public ContentBlock() {
     }
