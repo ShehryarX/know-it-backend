@@ -6,7 +6,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://dbuser:tPH4sp8wTN1oKxJd@cluster0.xieti.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+      uri: mongodb+srv://myuser:DaddyRafit18!@cluster0.xieti.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
   security:
     oauth2:
