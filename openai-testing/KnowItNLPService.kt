@@ -28,7 +28,7 @@ class KnowItNLPService {
     )
 
     // Use with qaEngine
-    private fun questionRequest(content: String) = CompletionRequest(
+    private fun keyPointRequest(content: String) = CompletionRequest(
         temperature = 1.0,
         maxTokens = 64,
         topP = 1.0,
@@ -41,4 +41,35 @@ class KnowItNLPService {
                 What are some key points?
                 1.""".trimIndent(),
     )
+
+    // Use with qaEngine
+    private fun questionRequest(content: String) = CompletionRequest(
+        temperature = 0.8,
+        maxTokens = 64,
+        topP = 1.0,
+        frequencyPenalty = .0,
+        presencePenalty = .0,
+        bestOf = 1,
+        prompt = """
+                $content
+                
+                Create a list of questions:
+                1.""".trimIndent(),
+    )
+
+    // Use with qaEngine
+    private fun answerRequest(content: String, question: String) = CompletionRequest(
+        temperature = 0.8,
+        maxTokens = 64,
+        topP = 1.0,
+        frequencyPenalty = .0,
+        presencePenalty = .0,
+        bestOf = 1,
+        prompt = """
+                $content
+                
+                $question
+                """.trimIndent(),
+    )
+
 }
