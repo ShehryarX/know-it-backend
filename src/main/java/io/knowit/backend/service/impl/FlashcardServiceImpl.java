@@ -11,6 +11,8 @@ import io.knowit.backend.service.FlashcardService;
 import io.knowit.backend.shared.dto.FlashcardDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ import java.util.List;
 public class FlashcardServiceImpl implements FlashcardService {
 
     @Autowired
-    private FlashcardRepository flashcardRepository;
+    protected FlashcardRepository flashcardRepository;
 
     @Override
     public List<FlashcardDto> getAllFlashcardsForNote(FlashcardDto flashcardDto) {
@@ -37,6 +39,23 @@ public class FlashcardServiceImpl implements FlashcardService {
         return flashcardDtos;
     }
 
+    @Nullable
+    protected FlashcardDto generateForQABlock(@NonNull FlashcardDto flashcardDto, @NonNull QuestionAnswerBlock qaBlock) {
+        QuestionAnswerBlockDetail detail = qaBlock.getData();
+
+        if (detail.getQuestion().length() > 0 && detail.getAnswer().length() > 0) {
+            Flashcard flashcard = new Flashcard(detail.getQuestion(), detail.getAnswer(),
+                    flashcardDto.getNoteId(), flashcardDto.getUserId());
+            this.flashcardRepository.save(flashcard);
+
+            FlashcardDto dto = new FlashcardDto();
+            BeanUtils.copyProperties(flashcard, dto);
+            return dto;
+        }
+
+        return null;
+    }
+
     @Override
     public List<FlashcardDto> generateFlashcards(FlashcardDto flashcardDto) {
         ContentRequest contentRequest = flashcardDto.getContents();
@@ -44,17 +63,9 @@ public class FlashcardServiceImpl implements FlashcardService {
 
         for (ContentBlock block : contentRequest.getBlocks()) {
             if (block instanceof QuestionAnswerBlock) {
-                QuestionAnswerBlock qaBlock = (QuestionAnswerBlock) block;
-                QuestionAnswerBlockDetail detail = qaBlock.getData();
-
-                if (detail.getQuestion().length() > 0 && detail.getAnswer().length() > 0) {
-                    Flashcard flashcard = new Flashcard(detail.getQuestion(), detail.getAnswer(),
-                            flashcardDto.getNoteId(), flashcardDto.getUserId());
-                    this.flashcardRepository.save(flashcard);
-
-                    FlashcardDto dto = new FlashcardDto();
-                    BeanUtils.copyProperties(flashcard, dto);
-                    flashcards.add(dto);
+                FlashcardDto flashcard = generateForQABlock(flashcardDto, (QuestionAnswerBlock) block);
+                if (flashcard != null) {
+                    flashcards.add(flashcard);
                 }
             }
         }

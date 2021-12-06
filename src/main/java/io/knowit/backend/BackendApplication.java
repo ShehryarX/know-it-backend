@@ -3,6 +3,7 @@ package io.knowit.backend;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.knowit.backend.config.AppProperties;
+import io.knowit.backend.config.OpenAiProperties;
 import io.knowit.backend.proto.request.content.ContentRequest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * TODO: Add verbose exception handling...
  * TODO: Return list of errors for invalid requests...
  */
-@EnableConfigurationProperties(AppProperties.class)
+@EnableConfigurationProperties({AppProperties.class, OpenAiProperties.class})
 @SpringBootApplication
 public class BackendApplication {
     public static void main(String[] args) throws JsonProcessingException {

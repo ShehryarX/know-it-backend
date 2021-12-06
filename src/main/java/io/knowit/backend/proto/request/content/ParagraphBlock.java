@@ -1,7 +1,7 @@
 package io.knowit.backend.proto.request.content;
 
 public class ParagraphBlock extends ContentBlock {
-    class ParagraphBlockDetail {
+    public class ParagraphBlockDetail {
         private String text;
 
         public ParagraphBlockDetail() {
